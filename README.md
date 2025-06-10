@@ -1,4 +1,4 @@
-# Interactive Web Applications Showcase 🌟
+# Interactive Web Applications  🌟
 
 Welcome to our collection of interactive web applications showcasing the power of HTML5, CSS3, and JavaScript. Explore these projects designed to inspire and demonstrate various web development concepts and user interface designs.
 
