@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html><head>
+     <title> canvas</title> 
+
+     <style> 
+     *{
+        padding: 0;
+        margin: 0;
+        user-select: none;
+     }
+     #toolbar
+     {
+        position: fixed;
+        top: 0;
+        background-color: black;
+        color: white;
+        font: 18px bold tahoma;
+        width: 100%;
+        display: -webkit-box;
+        -webkit-box-align: center;
+        padding: 10px;
+        height: 6%;
+     }
+     #radiusbar
+     {
+        /* border: 2px solid yellow; */
+        width: 200px;
+        padding: 10px;
+     }
+     .incredecre,#radiusvalue, #savebtn,#resetbtn
+     {
+        font: 20px;
+        /* border: 1px solid red; */
+        padding: 5px 5px; 
+        border-radius: 50%;
+        margin-left: 10px;
+        box-shadow: red 5px 5px 10px inset, cyan -5px -5px 10px inset;
+
+      }
+      .incredecre,#radiusvalue,#savebtn,#resetbtn ,.colors:hover
+      {
+        cursor: pointer;
+
+      }
+      #savebar
+      {
+        width: 200px;
+        margin-left: 30px;
+        
+
+      }
+      #savebtn
+      {
+        margin-left: 80px; 
+
+      }
+      #colorsbar
+      {
+        /* border: 1px solid yellow; */
+        width: 600px;
+        margin-left: 50px;
+        padding: 10px;
+        display: -webkit-box;
+        -webkit-box-align: center;
+
+      }
+      .colors{
+        width: 35px;
+        height: 35px;
+        margin-left: 10px;
+        border-radius: 50%;
+      }
+      .active
+      {
+        border: 2px solid white;
+      }
+
+
+
+     </style>
+    </head> 
+    <body> 
+        <div id="toolbar">
+            <div id="radiusbar">
+                <label> Radius</label>
+                <span id="radiusvalue"> 10 </span>
+                <span id="incre" class="incredecre">+ </span>
+                <span id="decre" class="incredecre">- </span>
+                 </div> 
+                 <div id="savebar">
+                    <label id="savebtn"> Save</label> 
+                    <label id="resetbtn"> Reset</label> 
+
+                 </div>
+                 <div id="colorsbar">
+                    <div class="colors" style="background-color: red;"></div>
+                    <div class="colors" style="background-color: blue;"></div>
+                    <div class="colors" style="background-color: green;"></div>
+                    <div class="colors" style="background-color: pink"></div>
+                    <div class="colors" style="background-color: deepskyblue;"></div>
+                    <div class="colors" style="background-color: cyan;"></div>
+                    <div class="colors" style="background-color: slateblue;"></div>
+                    <div class="colors" style="background-color: rgb(88, 79, 155);"></div>
+                    <div class="colors" style="background-color: rgb(29, 29, 7);"></div>
+                    <div class="colors" style="background-color: rgb(135, 135, 72);"></div>
+                    <div class="colors" style="background-color: rgb(95, 95, 71);"></div>
+
+                    
+                 </div>
+                 
+                 
+        </div>
+        <canvas id="mycanvas" style="display: block;"> 
+
+            Sorry
+         </canvas>
+
+        <script>
+            window.onload = doItfirst;
+
+            function doItfirst()
+            {
+                 mycanvas = document.getElementById("mycanvas");
+                 mycontext = mycanvas.getContext("2d");
+                 isdrawable=false;
+                 radius=10; 
+                 incre=document.getElementById("incre");
+                 decre=document.getElementById("decre");
+                 radiusvalue=document.getElementById("radiusvalue");
+                 savebtn=document.getElementById("savebtn"); //get Data url 
+                 resetbtn=document.getElementById("resetbtn");
+                 allcolors=document.getElementsByClassName("colors")
+                 for(var i=0;i<allcolors.length;i++ )
+                 {
+                    allcolors[i].addEventListener("click",changecolor)
+
+                 }
+
+
+                 mycanvas.width = window.innerWidth;
+                 mycanvas.height = window.innerHeight; 
+                 mycanvas.addEventListener("mousemove",drawcircle);
+                 mycanvas.addEventListener("mousedown",enabledrawing);
+                 mycanvas.addEventListener("mouseup",disabledrawing);
+                 incre.addEventListener("click",increaseradius);
+                 decre.addEventListener("click",decreaseradius);
+                 savebtn.addEventListener("click",saveimage);
+                 resetbtn.addEventListener("click",resetpage);
+
+             } 
+             
+             function resetpage()
+             {
+                mycontext.clearRect(0, 0, mycanvas.width, mycanvas.height);
+            }
+
+             function saveimage ()
+             {
+                const dataURL = mycanvas.toDataURL("image/png");
+                const link = document.createElement("a");
+                link.href = dataURL;
+                link.download = "drawing.png";
+                link.click();
+
+                
+
+                
+
+              }
+             
+             function changecolor(e) 
+             {
+                newcolor=e.target; 
+                mycontext.fillStyle = newcolor.style.backgroundColor;
+                // newcolor.className +="active";
+
+                
+             }
+
+
+
+
+             function increaseradius ()
+             {
+                 radius++; 
+                 checkradius(radius);
+               
+
+
+
+             }
+
+             function decreaseradius()
+              {
+                radius--; 
+                checkradius(radius);
+
+
+             }
+             function checkradius(newradius)
+             {
+                if(newradius>50)
+                { 
+                    newradius=50;
+  
+
+                } 
+                else if(newradius<1){ newradius=1;} 
+                radius=newradius;
+                radiusvalue.innerText=radius;
+
+             }
+             function enabledrawing()
+             {
+                isdrawable=true;
+
+              }
+              function disabledrawing()
+             {
+                isdrawable=false;
+
+              }
+             function drawcircle(e)
+             {
+                if(isdrawable){
+                mycontext.beginPath();
+                mycontext.arc(e.clientX,e.clientY,radius,0,Math.PI*2);
+                mycontext.fill();
+                mycontext.closePath();
+                }
+
+
+             }
+
+            </script>
+
+
+
+
+    </body>
+
+
+
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html> 
+<head>
+    <title>Drag Drop</title> 
+    <style> 
+        #mainwrapper {
+            width: 1300px;
+            border: 1px solid blue;
+            margin: 20px auto;
+            box-shadow: #ebb30e 30px 30px 30px 30px inset;
+        }
+
+        section {
+            width: 1000px;
+            height: 120px;
+            margin: 20px auto;
+            text-align: center;
+            border: 1px solid black;
+            border-radius: 10%;
+        }
+
+        img {
+            width: 100px;
+            height: 100px;
+            margin: 10px;
+            user-select: none;
+        }
+
+        img:hover {
+            transform: rotate(360deg);
+            transition: 3s;
+            
+        }
+    </style>
+</head>
+<body> 
+    <div id="mainwrapper">
+        <section id="up">
+            <img src="images/1.jpg">
+            <img src="images/2.jpg">
+            <img src="images/3.jpg" >
+            <img src="images/4.jpg" >
+            <img src="images/5.jpg" >
+            <img src="images/6.jpg" >
+            <img src="images/7.jpg" >
+            <img src="images/8.jpg" >
+        </section>
+        <section id="down"></section> 
+    </div>
+
+    <script> 
+        let allImgs = document.querySelectorAll("img");
+        let upSection = document.getElementById("up");
+        let downSection = document.getElementById("down");
+        let draggedImg = null;
+        let section=document.querySelectorAll("section")
+
+        for (let i = 0; i < allImgs.length; i++) {
+            allImgs[i].addEventListener('dragstart', startdrag);
+            allImgs[i].addEventListener('dragend', enddrag);
+        }
+
+        downSection.addEventListener('drop', dropped);
+        downSection.addEventListener('dragenter', enterdrag);
+        downSection.addEventListener('dragover', overdrag);
+        downSection.addEventListener('dragleave', leavedrag);
+
+
+        upSection.addEventListener('dragleave', leavedrag);
+        upSection.addEventListener('drop', dropped);
+        upSection.addEventListener('dragenter', enterdrag);
+        upSection.addEventListener('dragover', overdrag);
+
+        function startdrag(e) {
+            console.log(e.target.outerHTML);
+            draggedImg = e.target;
+        }
+
+        function enddrag(e) {
+            e.preventDefault();
+        }
+
+        function dropped(e) {
+            e.preventDefault();
+            if (draggedImg) {
+                // downSection.appendChild(draggedImg);
+                e.currentTarget.appendChild(draggedImg);
+
+            }
+        }
+
+        function enterdrag(e) {
+            e.preventDefault();
+        }
+
+        function overdrag(e) {
+            e.preventDefault();
+        }
+
+        function leavedrag(e) {
+            e.preventDefault();
+        }
+        
+    </script>
+</body>
+</html>

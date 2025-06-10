@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html> 
+    <head> 
+        <title> Gelocation</title>
+        <style> 
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        #mainwrapper
+         {
+            display: flex;
+            flex-direction: column;
+            width: 80vw;
+            height: 80vh;
+            margin: 10px auto;
+            border: 1px solid black;
+            box-shadow: rgb(239, 160, 13) 100px 100px 100px 100px inset;
+            border-radius: 20px;
+
+
+        }
+        #mainwrapper > section ,#mymap{
+                margin:  15px;
+                padding: 10px;
+                border: 1px solid blue;
+                height: 50px;
+                border-radius: 20px;
+
+            }
+            #displaydata
+            {
+                flex-grow: 1;
+            }
+            #secbtn {
+                margin: 10px auto;
+                padding: 10px;
+                text-align: center;
+            }
+            
+            .btns {
+                padding-left: 10px;
+                padding-right: 10px;
+                margin-right: 30px; 
+                width: 200px;
+                height: 30px;
+                border-radius: 20px;
+                box-shadow: blue 5px 5px 10px inset, cyan -5px -5px 10px inset;
+        
+            }
+            .btns:hover {
+                cursor: pointer;
+            }
+            #mymap
+            {
+                height: 90%
+            }
+            p 
+            {
+                text-align: center;
+                background-color: rgb(218, 132, 26);
+                padding: 9px;
+                margin: 9px
+            }
+
+            
+           
+        
+            
+        </style>
+    </head>
+    <body> 
+
+        <div id="mainwrapper"> 
+
+
+            <section id="secbtn"> 
+                <input type="button" id="display" value="Display Map" class="btns"> 
+                <input type="button" id="details" value="Detailed Information" class="btns"> 
+
+
+
+
+            </section>
+
+
+            <section id="displaydata">
+                <section id="mymap"> </section>
+
+            </section>
+        </div>
+        <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyB90FxtYG_ybAYXGkz0ybkmkboE2nEbezI"></script>
+
+
+        <!-- <script> 
+        
+            window.onload = doItfirst;
+
+            function doItfirst() {
+
+                detail=document.getElementById("details");
+                displaymap=document.getElementById("display");
+                mymap=document.getElementById("mymap");
+
+
+                detail.addEventListener("click",displaydata);
+                displaymap.addEventListener("click",display);
+
+
+                function display()
+                {
+                    checkav();
+
+                }
+
+
+
+                
+                function displaydata()
+                {
+                    checkav();
+
+
+                }
+
+                function checkav()
+                {
+                    if (navigator.geolocation)
+                     {
+                        navigator.geolocation.getCurrentPosition(getpostion,errorhandle);
+
+                     }
+                    else 
+                     {
+                        mymap.innerText="Please update Your broweser"
+
+                    }
+                 } 
+                 function getpostion (e)
+                 { 
+                    console.log(e)
+                      newdate= new Date(e.timestamp);
+                      newaccuracy= e.coords.accuracy;
+                      newlatitude= e.coords.latitude;
+                      newalongitude= e.coords.longitude;
+                      
+
+                    //   mymap.innerHTML = `
+                    //     <p>Date: </p>
+                    //     <p> ${newdate}</p>
+                    //     <p>Accuracy:</p>
+                    //     <p> ${newaccuracy} meters</p>
+                    //     <p>Latitude:</p>
+                    //     <p> ${newlatitude}</p>
+                    //     <p>Longitude: </p>
+                    //     <p> ${newalongitude}</p>
+
+                        
+                    // `;
+
+                    var location = new google.maps.LatLng(newlatitude, newalongitude);
+
+                    // 2- specify specs of map: zoom, center
+                    var specs = { zoom: 15, center: location };
+
+                    // 3- retrieve and store map in a variable called 'map'
+                    var map = new google.maps.Map(mymap, specs);
+                    const marker = new google.maps.Marker({
+                        position: location,
+                        map: map, 
+                    });
+
+
+                    if(detail.clicked) {
+                        updateDisplay();
+                    }
+                    
+                    // If map button was clicked, show the map
+                    if(displaymap.clicked) {
+                        showMap();
+                    }
+
+                     
+
+                 }
+                 function updateDisplay ()
+                 {
+                      mymap.innerHTML = `
+                        <p>Date: </p>
+                        <p> ${newdate}</p>
+                        <p>Accuracy:</p>
+                        <p> ${newaccuracy} meters</p>
+                        <p>Latitude:</p>
+                        <p> ${newlatitude}</p>
+                        <p>Longitude: </p>
+                        <p> ${newalongitude}</p>
+
+                        
+                    `;
+                 }
+                 
+                 function showMap ()
+                 {
+                    var location = new google.maps.LatLng(newlatitude, newalongitude);
+
+                    // 2- specify specs of map: zoom, center
+                    var specs = { zoom: 15, center: location };
+
+                    // 3- retrieve and store map in a variable called 'map'
+                    var map = new google.maps.Map(mymap, specs);
+                    const marker = new google.maps.Marker({
+                        position: location,
+                        map: map, 
+                    });
+
+                  }
+
+
+
+                 function errorhandle(e)
+                 {
+                    alert("Please Allow The Location")
+
+
+                  }
+
+
+
+
+            }
+
+        </script> -->
+        <script>
+            var clickedBtn = ""; // Track which button was clicked
+    
+            window.onload = doItfirst;
+    
+            function doItfirst() {
+                detail = document.getElementById("details");
+                displaymap = document.getElementById("display");
+                mymap = document.getElementById("mymap");
+    
+                detail.addEventListener("click", function () {
+                    clickedBtn = "details";
+                    displaydata();
+                });
+    
+                displaymap.addEventListener("click", function () {
+                    clickedBtn = "display";
+                    display();
+                });
+            }
+    
+            function display() {
+                checkav();
+            }
+    
+            function displaydata() {
+                checkav();
+            }
+    
+            function checkav() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(getpostion, errorhandle);
+                } else {
+                    mymap.innerText = "Please update Your browser";
+                }
+            }
+    
+            function getpostion(e) {
+                console.log(e);
+                newdate = new Date(e.timestamp);
+                newaccuracy = e.coords.accuracy;
+                newlatitude = e.coords.latitude;
+                newalongitude = e.coords.longitude;
+    
+                if (clickedBtn === "details") {
+                    updateDisplay();
+                }
+    
+                if (clickedBtn === "display") {
+                    showMap();
+                }
+            }
+    
+            function updateDisplay() {
+                mymap.innerHTML = `
+                    <p>Date: </p>
+                    <p>${newdate}</p>
+                    <p>Accuracy:</p>
+                    <p>${newaccuracy} meters</p>
+                    <p>Latitude:</p>
+                    <p>${newlatitude}</p>
+                    <p>Longitude: </p>
+                    <p>${newalongitude}</p>
+                `;
+            }
+    
+            function showMap() {
+                var location = new google.maps.LatLng(newlatitude, newalongitude);
+                var specs = { zoom: 15, center: location };
+                var map = new google.maps.Map(mymap, specs);
+                const marker = new google.maps.Marker({
+                    position: location,
+                    map: map,
+                });
+            }
+    
+            function errorhandle(e) {
+                alert("Please Allow The Location");
+            }
+        </script>
+    </body>
+</html>
